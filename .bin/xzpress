@@ -13,16 +13,11 @@ elif [ "$fileSizeMiB" -gt 16 ]; then
 elif [ "$fileSizeMiB" -gt 8 ]; then
 	flag=7
 else
-	flag=0
+	flag=6
 fi
 
 # Create archive
-if [ "$flag" = 0 ]; then
-	command='tar cJf "$1".tar.xz "$1" | pv -s "${fileSizeKb}k"'
-else
-	command='tar c "$1" | pv -s "${fileSizeKb}k" | xz -"$flag" > "$1".tar.xz'
-fi
-
+command='tar c "$1" | pv -s "${fileSizeKb}k" | xz -"$flag" > "$1".tar.xz'
 printf "Creating archive using command: \"%s\"...\n" "$command"
 eval "$command"
 
