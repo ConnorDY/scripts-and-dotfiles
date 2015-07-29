@@ -1,0 +1,13 @@
+#!/bin/sh
+eval "$(ssh-agent)"
+
+PATH=$PATH:~/.bin
+export PATH
+
+QT_STYLE_OVERRIDE=gtk
+export QT_STYLE_OVERRIDE
+
+xrdb /home/connor/.Xresources &
+xset +fp /usr/share/fonts/local
+
+/home/connor/.bin/bg-cycler &

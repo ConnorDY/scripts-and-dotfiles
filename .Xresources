@@ -1,0 +1,42 @@
+URxvt*scrollBar:          false
+URxvt.transparent:	  true
+URxvt.shading:		  15
+
+URxvt*font: -misc-tamsyn-medium-r-normal--14-101-100-100-c-70-iso8859-1
+URxvt*boldFont: -misc-tamsyn-bold-r-normal--14-101-100-100-c-70-iso8859-1
+
+URxvt*foreground              : #AAAAAA
+URxvt*background              : #151515
+
+URxvt.iso14755: off
+URxvt.iso14755_52: off
+
+URxvt.perl-lib: .urxvt/
+URxvt.perl-ext-common: default,matcher,clipboard
+
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1
+
+URxvt.keysym.S-C-C: perl:clipboard:copy
+URxvt.keysym.S-C-V: perl:clipboard:paste
+URxvt.keysym.S-C-B: perl:clipboard:paste_escaped
+
+*background: #0e0e0e
+*foreground: #4ad5e1
+
+*color0: #000000
+*color8: #8b8f93
+*color1: #dc7491
+*color9: #ff94a1
+*color2: #0eb867
+*color10: #4ed897
+*color3: #dfe324
+*color11: #dff345
+*color4: #4040c0
+*color12: #8080ff
+*color5: #ce88f0
+*color13: #fea8ff
+*color6: #73f7ff
+*color14: #73f7ff
+*color7: #e1dddd
+*color15: #e1dddd
