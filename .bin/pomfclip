@@ -1,0 +1,136 @@
+#!/bin/sh
+
+retry_if_temporary_fail() {
+    # Workaround for stupidness in scrot, maim, import and possibly other tools.
+    local out res
+    i=0
+    while [ $i -lt 10 ]; do
+        out=$("$@" 2>&1)
+        res=$?
+        [ "$res" = 0 ] && break || case $out in
+            *"Resource temporarily unavailable"*|*"Failed to grab X cursor"*) sleep 0.1;;
+            *) break;;
+        esac
+        i=$((i+1))
+    done
+    printf %s\\n "$out" >&2
+    return "$res"
+}
+
+detect_cancelled_selection() {
+    # Returns 2 on cancelled selection, consistent with scrot
+    # This is to stop it falsely reporting an error when maim fails because the user cancelled it.
+    out=$("$@" 2>&1)
+    res=$?
+    printf %s\\n "$out" >&2
+    case $out in
+        *"Canceled selection."*) return 2;;
+        *) return "$res"
+    esac
+}
+
+log() {
+    local level
+    level="$1"
+    shift
+    echo >&2 "$@"
+    notify-send -i dialog-"$level" "$title" "$*" &
+}
+
+die() {
+    log "$@"; exit 1
+}
+
+take_screenshot() {
+    if [ -n "$SCREENSHOT_TOOL" ]; then
+        detect_cancelled_selection retry_if_temporary_fail "$SCREENSHOT_TOOL" "$1"
+    elif command -v maim >/dev/null 2>&1 &&
+         command -v slop >/dev/null 2>&1; then
+        detect_cancelled_selection retry_if_temporary_fail maim -sc 1,0,0,0.8 --hidecursor "$1"
+    elif command -v gnome-screenshot >/dev/null 2>&1; then
+        retry_if_temporary_fail gnome-screenshot -a -f "$1"
+    elif command -v scrot >/dev/null 2>&1; then
+        retry_if_temporary_fail scrot -s "$1"
+    elif command -v shutter >/dev/null 2>&1; then
+        shutter -e -s -o "$1"
+    elif command -v import >/dev/null 2>&1; then
+        retry_if_temporary_fail import "$1"
+    else
+        die error "No screenshot software?"
+    fi
+
+    [ $? != 0 -a $? != 2 ] && die error "Failed to take a screenshot"
+    [ ! -s "$1" ] && die warning "Did not take a screenshot"
+}
+
+take_lock() {
+    lock="/tmp/pomfclip-$DISPLAY"
+    exec 4>"$lock"
+    flock -n 4
+}
+
+upload=pomfload
+localdir=$HOME/Pictures/Screenshots/
+title='Pomf!'
+
+for arg do case $arg in
+    --uguu)
+        upload=uguuload
+        title='Uguu~'
+        ;;
+    --love)
+        upload='pomfload --upload https://img.loveisover.me/upload.php --download http://a.loveisover.me/'
+        title='Love is over!'
+        ;;
+    --0x0)
+        upload='uguuload --upload https://0x0.st'
+        title='The Null Pointer'
+        ;;
+    --noupload)
+        upload=''
+        title='PomfClip!'
+        ;;
+    *)
+        echo "Unknown argument passed to $(basename -- "$0")." >&2
+        echo "Try --uguu, --love, --0x0, or nothing." >&2
+        exit 1
+        ;;
+esac; done
+
+if take_lock; then
+    file=""
+    errorfile=""
+    cleanup() {
+        code=$?
+        [ -n "$file" ] && rm -f -- "$file"
+        [ -n "$errorfile" ] && rm -f -- "$errorfile"
+        rm -f -- "$lock"
+        trap - EXIT INT HUP QUIT TERM
+        exit "$code"
+    }
+    trap cleanup EXIT INT HUP QUIT TERM
+
+    file=$(mktemp --tmpdir pomfXXXXXXXX.png)
+    errorfile=$(mktemp --tmpdir pomfXXXXXXXX.log)
+
+    take_screenshot "$file"
+    optipng "$file"
+
+    if [ "$upload" = "" ]; then
+        cp -t "$localdir" -- "$file"
+        log information "File saved to $(echo $localdir)."
+    else
+        url=$(eval "$upload \"\$file\"" 2>$errorfile) || die warning "Failed to upload screenshot.$(echo;cat "$errorfile")"
+
+        printf %s\\n "$url"
+
+        if
+            printf %s "$url" | xsel -ib
+            printf %s "$url" | xsel -ip
+        then
+            log information "Uploaded screenshot at $url! The URL is in your clipboard."
+        else
+            log information "Uploaded screenshot at $url!"
+        fi
+    fi
+fi

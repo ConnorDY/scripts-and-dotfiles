@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --randomize --recursive --bg-fill /home/connor/Pictures/BG/*

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Get size directory contents
+fileSizeKb=$(du -s -- "$1" | awk '{ print $1 }')
+fileSizeMiB=$((fileSizeKb / 1024))
+echo Found "$fileSizeMiB" MiB worth of files!
+
+# Determine optimal flag
+if [ "$fileSizeMiB" -gt 32 ]; then
+	flag=9
+elif [ "$fileSizeMiB" -gt 16 ]; then
+	flag=8
+elif [ "$fileSizeMiB" -gt 8 ]; then
+	flag=7
+else
+	flag=0
+fi
+
+# Create archive
+if [ "$flag" = 0 ]; then
+	command='tar cJf "$1".tar.xz "$1" | pv -s "${fileSizeKb}k"'
+else
+	command='tar c "$1" | pv -s "${fileSizeKb}k" | xz -"$flag" > "$1".tar.xz'
+fi
+
+printf "Creating archive using command: \"%s\"...\n" "$command"
+eval "$command"
+
+echo Done!

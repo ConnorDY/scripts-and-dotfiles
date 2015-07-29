@@ -1,0 +1,2 @@
+#!/bin/sh
+exec cat /home/connor/Documents/notes.self
