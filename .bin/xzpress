@@ -1,11 +1,12 @@
 #!/bin/sh
+# Usage: xzpress /path/to/directory
 
-# Get size directory contents
+# Get size of directory contents
 fileSizeKb=$(du -s -- "$1" | awk '{ print $1 }')
 fileSizeMiB=$((fileSizeKb / 1024))
 echo Found "$fileSizeMiB" MiB worth of files!
 
-# Determine optimal flag
+# Determine optimal flag for tar
 if [ "$fileSizeMiB" -gt 32 ]; then
 	flag=9
 elif [ "$fileSizeMiB" -gt 16 ]; then
