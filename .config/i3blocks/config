@@ -1,35 +1,37 @@
 interval=5
-command=~/.bin/i3blocks/$BLOCK_NAME
+command=/usr/lib/i3blocks/$BLOCK_NAME
 
 [media]
+command=~/.bin/i3blocks/media
 signal=1
 
 [disk-root]
 label=root:
-command=~/.bin/i3blocks/disk
+command=/usr/lib/i3blocks/disk
 instance=/
 interval=30
 
 [disk-home]
 label=home:
-command=~/.bin/i3blocks/disk
+command=/usr/lib/i3blocks/disk
 instance=/home/
 interval=30
 
-[network]
-command=~/.bin/i3blocks/network
+[iface]
+label=L:
+command=~/.bin/i3blocks/iface
 instance=enp0s25
 color=#00FF00
-label=E:
+interval=10
 
-[network]
-command=~/.bin/i3blocks/network
+[wifi]
+label=W:
+command=~/.bin/i3blocks/wifi
 instance=wlp3s0
 color=#00FF00
-label=W:
+interval=10
 
 [battery]
-command=~/.bin/i3blocks/battery
 label=BAT
 interval=30
 
