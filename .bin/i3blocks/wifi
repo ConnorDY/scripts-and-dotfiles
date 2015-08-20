@@ -32,23 +32,16 @@ IP=$(ip a s dev "$INTERFACE" | awk '$1 == "inet" { print substr($2, 1, index($2,
 
 #------------------------------------------------------------------------
 
-if [[ "$(cat /sys/class/net/$IF/operstate)" = 'down' ]]; then
-	echo down # full text
-	echo down # short text
-	echo \#FF0000 # color
-	exit
-else
-	echo "$IP ($QUALITY%)" # full text
-	echo "$IP ($QUALITY%)" # short text
+echo "$IP ($QUALITY%)" # full text
+echo "$IP ($QUALITY%)" # short text
 
-	# color
-	if [[ $QUALITY -ge 80 ]]; then
-		echo "#00FF00"
-	elif [[ $QUALITY -lt 80 ]]; then
-		echo "#FFF600"
-	elif [[ $QUALITY -lt 60 ]]; then
-		echo "#FFAE00"
-	elif [[ $QUALITY -lt 40 ]]; then
-		echo "#FF0000"
-	fi
+# color
+if [[ $QUALITY -ge 80 ]]; then
+	echo "#00FF00"
+elif [[ $QUALITY -lt 80 ]]; then
+	echo "#FFF600"
+elif [[ $QUALITY -lt 60 ]]; then
+	echo "#FFAE00"
+elif [[ $QUALITY -lt 40 ]]; then
+	echo "#FF0000"
 fi

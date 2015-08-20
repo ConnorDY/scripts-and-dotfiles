@@ -6,26 +6,26 @@ command=~/.bin/i3blocks/media
 signal=1
 
 [disk-root]
-label=root:
+label=/:
 command=/usr/lib/i3blocks/disk
 instance=/
 interval=30
 
 [disk-home]
-label=home:
+label=/home/:
 command=/usr/lib/i3blocks/disk
 instance=/home/
 interval=30
 
 [iface]
-label=L:
+label=Eth:
 command=~/.bin/i3blocks/iface
 instance=enp0s25
 color=#00FF00
 interval=10
 
 [wifi]
-label=W:
+label=WiFi:
 command=~/.bin/i3blocks/wifi
 instance=wlp3s0
 color=#00FF00
