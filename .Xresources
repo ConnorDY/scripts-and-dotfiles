@@ -1,12 +1,12 @@
-URxvt*scrollBar:          false
-URxvt.transparent:	  true
-URxvt.shading:		  15
+URxvt*scrollBar: false
+URxvt.transparent: true
+URxvt.shading: 15
 
 URxvt*font: -misc-tamsyn-medium-r-normal--14-101-100-100-c-70-iso8859-1
 URxvt*boldFont: -misc-tamsyn-bold-r-normal--14-101-100-100-c-70-iso8859-1
 
-URxvt*foreground              : #AAAAAA
-URxvt*background              : #151515
+URxvt*foreground: #AAAAAA
+URxvt.background: #151515
 
 URxvt.iso14755: off
 URxvt.iso14755_52: off

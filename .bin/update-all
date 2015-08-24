@@ -1,2 +1,0 @@
-#!/bin/sh
-exec yaourt -Syu --noconfirm --aur
