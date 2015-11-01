@@ -26,8 +26,8 @@ URxvt.keysym.S-C-B: perl:clipboard:paste_escaped
 
 *color0: #000000
 *color8: #8b8f93
-*color1: #dc7491
-*color9: #ff94a1
+*color1: #dc5471
+*color9: #ff74a1
 *color2: #0eb867
 *color10: #4ed897
 *color3: #dfe324
