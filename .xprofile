@@ -10,5 +10,5 @@ export QT_STYLE_OVERRIDE
 xrdb /home/connor/.Xresources &
 xset +fp /usr/share/fonts/local
 
-compton --backend glx &
+while :; do compton --backend glx; done &
 /home/connor/.bin/bg-cycler &

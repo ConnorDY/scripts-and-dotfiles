@@ -1,4 +1,4 @@
-interval=5
+interval=10
 command=/usr/lib/i3blocks/$BLOCK_NAME
 
 [media]
@@ -9,34 +9,35 @@ signal=1
 label=/:
 command=/usr/lib/i3blocks/disk
 instance=/
-interval=30
+interval=60
 
 [disk-home]
 label=/home/:
 command=/usr/lib/i3blocks/disk
 instance=/home/
-interval=30
+interval=60
 
 [iface]
 label=Eth:
 command=~/.bin/i3blocks/iface
 instance=enp0s25
 color=#00FF00
-interval=10
+interval=30
 
 [wifi]
 label=WiFi:
 command=~/.bin/i3blocks/wifi
 instance=wlp3s0
 color=#00FF00
-interval=10
+interval=30
 
 [battery]
 label=BAT
-interval=30
+interval=60
 
 [load_average]
 
 [time]
 command=date '+%F %I:%M:%S %p'
+interval=10
 
